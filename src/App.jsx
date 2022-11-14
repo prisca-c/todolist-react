@@ -1,23 +1,46 @@
-import logo from './logo.svg';
 import './App.css';
+import Table from "./components/Table";
+import {useState} from "react";
 
-function App() {
+const App = () =>{
+  const [todo, setTodo] = useState(
+    [
+      {
+        id: 1,
+        todo: "todo 1",
+        description: "description 1",
+        date: "2022-11-20",
+      },
+    ],
+  )
+
+  const handleAddTodo = (e) => {
+    e.preventDefault();
+    setTodo(
+      [...todo,
+      {
+        id:
+          todo.length === 0
+            ? 1
+            : todo[todo.length - 1].id + 1,
+        todo: e.target.todo.value,
+        description: e.target.description.value,
+        date: e.target.date.value,
+      }])
+  }
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    setTodo(
+      todo.filter(
+        todo => todo.id !== parseInt(e.target.value)
+    ))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h2 className={"text-center"}>Todo Do List</h2>
+      <Table todoList={todo} handleAddTodo={handleAddTodo} handleDelete={handleDelete}/>
     </div>
   );
 }
